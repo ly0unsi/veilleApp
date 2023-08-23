@@ -22,6 +22,7 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        // Validation des données entrées par l'utilisateur
         $request->validate([
             'firstname' => ['required', 'string', 'max:255', 'min:3'],
             'lastname' => ['required', 'string', 'max:255', 'min:3'],
@@ -29,18 +30,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Création d'une nouvelle instance de modèle User avec les données validées
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_id' => 3
+            'password' => Hash::make($request->password), // Le mot de passe est hashé avant d'être stocké
+            'role_id' => 3, // Attribution du rôle utilisateur par défaut (ID 3)
         ]);
 
-        // event(new Registered($user));
-
-        // Auth::login($user);
-
+        // Réponse JSON avec l'ID de l'utilisateur créé 
         return response()->json(['id' => $user->id]);
     }
 }

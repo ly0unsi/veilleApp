@@ -1,10 +1,5 @@
 import React from 'react'
 import {
-    AppstoreOutlined,
-    MenuOutlined,
-    DesktopOutlined,
-    DownOutlined, RightOutlined,
-    MailOutlined,
     SearchOutlined
 } from '@ant-design/icons';
 import PostTile from './postTile/PostTile';

@@ -26,19 +26,24 @@ class UserController extends Controller
     }
     public function confirmDemande($id)
     {
-        // $demandes = $this->userRepository->getDemandes();
-
+        // Recherche de l'utilisateur en fonction de l'ID fourni
         $user = User::find($id);
 
+        // Si un utilisateur valide est trouvé
         if ($user) {
+            // Met à jour le champ 'verified_at' avec l'heure actuelle
             $user->update([
                 'verified_at' => Carbon::now(),
             ]);
+
+            // Extraction de l'adresse e-mail du destinataire
             $recipientEmail = $user->email;
 
+            // Envoie d'une notification par e-mail à l'utilisateur confirmé
             Mail::to($recipientEmail)->send(new ConfirmNotification($user->firstname));
         }
 
+        // Réponse JSON indiquant le succès de la confirmation
         return response()->json('', Response::HTTP_OK);
     }
 }

@@ -18,24 +18,38 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+        // Récupération de l'adresse e-mail et du mode de la requête
         $email = $request->email;
         $mode = $request->mode;
+
+        // Recherche de l'utilisateur en fonction de l'adresse e-mail
         $user = User::where('email', $email)->first();
+
+        // Vérification du mode (admin ou utilisateur)
         if ($mode == "admin") {
-            if ($user->role_id !== 2) return response()->json("Desole vous n'etes pas un admin", 427);
-        }
-        if (!$user->hasVerifiedEmail()) {
-            return response()->json("Votre email n'est pas verifié", 409);
-        }
-        if (!$user->isVerified()) {
-            return response()->json("Votre compte n'est pas verifié", 426);
+            // Vérification du rôle de l'utilisateur
+            if ($user->role_id !== 2) {
+                return response()->json("Désolé, vous n'êtes pas un administrateur", 427);
+            }
         }
 
+        // Vérification de l'adresse e-mail vérifiée
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json("Votre adresse e-mail n'est pas vérifiée", 409);
+        }
+
+        // Vérification du compte vérifié
+        if (!$user->isVerified()) {
+            return response()->json("Votre compte n'est pas vérifié", 426);
+        }
+
+        // Authentification de la requête
         $request->authenticate();
 
+        // Régénération de la session
         $request->session()->regenerate();
 
-
+        // Réponse JSON vide indiquant que la connexion a réussi
         return response()->json();
     }
 

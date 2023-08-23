@@ -18,13 +18,18 @@ class VerifyEmailController extends Controller
      */
     public function __invoke($id)
     {
-
+        // Recherche de l'utilisateur en fonction de l'ID fourni
         $user = User::find($id);
+    
+        // Vérifie si l'e-mail de l'utilisateur a déjà été vérifié
         if ($user->hasVerifiedEmail()) {
-            return response()->json("email est deja verified", 409);
+            return response()->json("L'adresse e-mail est déjà vérifiée", 409);
         }
-
+    
+        // Marque l'e-mail de l'utilisateur comme vérifié
         $user->markEmailAsVerified();
-        return response()->json("verified success");
+    
+        // Réponse JSON indiquant que la vérification a réussi
+        return response()->json("Vérification réussie");
     }
 }
