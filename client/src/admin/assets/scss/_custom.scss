@@ -1,0 +1,12 @@
+// Here you can add other styles
+.sidebar-nav::-webkit-scrollbar {
+    display: none;
+}
+        
+.header.header-sticky {
+    z-index: 100 !important;
+}
+
+.ant-btn-primary{
+    background-color: #4096ff !important;
+}
